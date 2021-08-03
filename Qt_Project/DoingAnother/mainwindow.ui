@@ -14,30 +14,43 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="btnSubmit">
+   <widget class="QPushButton" name="btnExit">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>170</y>
-      <width>171</width>
-      <height>41</height>
+      <x>120</x>
+      <y>200</y>
+      <width>93</width>
+      <height>28</height>
      </rect>
     </property>
     <property name="text">
-     <string>Submit</string>
+     <string>Exit</string>
     </property>
    </widget>
-   <widget class="QLabel" name="lblDisplay">
+   <widget class="QPushButton" name="btnHello">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>170</y>
-      <width>151</width>
+      <x>120</x>
+      <y>160</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>sayHello</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblSayHello">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>160</y>
+      <width>511</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Click Submit to say hello</string>
+     <string/>
     </property>
    </widget>
   </widget>
