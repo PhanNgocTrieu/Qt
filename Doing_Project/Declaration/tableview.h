@@ -5,6 +5,7 @@
 #include "inforofman.h"
 #include "isolatedplace.h"
 #include <QSqlDatabase>
+#include <QSqlQueryModel>
 #include <iostream>
 
 namespace Ui {
@@ -31,10 +32,10 @@ private slots:
     void on_btnExit_clicked();
 
     void on_pushButtonLoadingDBIsolated_clicked();
-
 private:
     Ui::TableView *ui;
     QSqlDatabase database;
+    QSqlQueryModel * modal;
 };
 
 #endif // TABLEVIEW_H

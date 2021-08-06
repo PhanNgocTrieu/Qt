@@ -26,7 +26,7 @@ MainMenu::MainMenu(QWidget *parent) :
     ui(new Ui::MainMenu)
 {
     ui->setupUi(this);
-    QWidget::setWindowTitle("Main Window");
+    QWidget::setWindowTitle("Declaration Window");
     // disable three input of Declaration
     ui->txtName->setEnabled(false);
     ui->txtManID->setEnabled(false);
@@ -61,17 +61,25 @@ void MainMenu::on_ButtonConnectDB_clicked()
     manTable.setDirToDB(myDirToDB);
     isolatedTable.setDirToDB(myDirToDB);
 
-    int rc;
-    rc = manTable.openDatabase();
-    if (rc == SQLITE_OK)
+    if (myDirToDB == "")
     {
-        QMessageBox::information(this,"Connected","Connected To Database successful");
-        manTable.createTable();
-        isolatedTable.createTable();
-        this->stateOfConnected = true;
+        QMessageBox::information(this,"Unconnected","Path is Empty! Connected To Database failed");
     }
     else
-        QMessageBox::information(this,"Connected","Connected To Database failed");
+    {
+        int rc;
+        rc = manTable.openDatabase();
+        if (rc == SQLITE_OK)
+        {
+            QMessageBox::information(this,"Connected","Connected To Database successful");
+            manTable.createTable();
+            isolatedTable.createTable();
+            this->stateOfConnected = true;
+        }
+        else
+            QMessageBox::information(this,"Unconnected","Connected To Database failed");
+    }
+
 }
 
 
@@ -368,8 +376,14 @@ void MainMenu::on_btnDeleteAllValuesIsolated_clicked()
 
 void MainMenu::on_ButtonShowDB_clicked()
 {
-    TableView *mTableDb = new TableView(this,manTable.getDirToDB());
-
-    mTableDb->show();
+    if (stateOfConnected == true)
+    {
+        TableView *mTableDb = new TableView(this,manTable.getDirToDB());
+        mTableDb->show();
+    }
+    else
+    {
+        QMessageBox::information(this,"Error:","You did not connect to DB yet!");
+    }
 }
 

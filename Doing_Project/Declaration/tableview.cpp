@@ -16,6 +16,7 @@ TableView::TableView(QWidget *parent) :
     ui(new Ui::TableView)
 {
     ui->setupUi(this);
+    QWidget::setWindowTitle("Database Window");
 }
 
 TableView::TableView(QWidget *parent, const std::string& DirToDB) :
@@ -25,11 +26,16 @@ TableView::TableView(QWidget *parent, const std::string& DirToDB) :
     manInfor.setDirToDB(DirToDB);
     isolatedPlaces.setDirToDB(DirToDB);
     ui->setupUi(this);
+    QWidget::setWindowTitle("Database Window");
+
+    modal = new QSqlQueryModel();
+
 }
 
 TableView::~TableView()
 {
     delete ui;
+    modal->clear();
 }
 
 void TableView::on_pushButtonLoadingDBDeclaration_clicked()
@@ -39,7 +45,7 @@ void TableView::on_pushButtonLoadingDBDeclaration_clicked()
     database.setDatabaseName(QString::fromStdString(manInfor.getDirToDB()));
     if (database.open())
     {
-        QSqlQueryModel * modal = new QSqlQueryModel();
+        modal = new QSqlQueryModel();
         QSqlQuery* query = new QSqlQuery(database);
 
         query->prepare("select * from manInFor");
@@ -50,14 +56,17 @@ void TableView::on_pushButtonLoadingDBDeclaration_clicked()
             ui->tableViewBDDeclaration->setModel(modal);
             database.removeDatabase(QString::fromStdString(manInfor.getDirToDB()));
             qDebug() << "Row Count:" << (modal->rowCount());
-            modal->clear();
+
         }
         else
         {
             qDebug() << "Query executive failed";
-            modal->clear();
         }
 
+        if (query)
+        {
+            delete query;
+        }
 
     }
     else
@@ -74,31 +83,29 @@ void TableView::on_pushButtonLoadingDBDeclaration_clicked()
 
 void TableView::on_pushButtonLoadingDBIsolated_clicked()
 {
-    database = QSqlDatabase::addDatabase("QSQLITE");
-    std::cout << isolatedPlaces.getDirToDB() << std::endl;
-    database.setDatabaseName(QString::fromStdString(manInfor.getDirToDB()));
     if (database.open())
     {
-        QSqlQueryModel * modal = new QSqlQueryModel();
+        modal = new QSqlQueryModel();
         QSqlQuery* query = new QSqlQuery(database);
 
-        query->prepare("select * from manInFor");
+        query->prepare("select * from Isolated");
 
         if (query->exec())
         {
             modal->setQuery(*query);
-            ui->tableViewBDDeclaration->setModel(modal);
+            ui->tableViewDBIsolated->setModel(modal);
             database.removeDatabase(QString::fromStdString(manInfor.getDirToDB()));
             qDebug() << "Row Count:" << (modal->rowCount());
-            modal->clear();
         }
         else
         {
             qDebug() << "Query executive failed";
-            modal->clear();
         }
 
-
+        if (query)
+        {
+            delete query;
+        }
     }
     else
     {
@@ -116,3 +123,5 @@ void TableView::on_btnExit_clicked()
 {
     close();
 }
+
+

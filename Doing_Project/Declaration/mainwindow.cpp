@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     //ui->txtUserName->set
-    QWidget::setWindowTitle("Login");
+    QWidget::setWindowTitle("Login Window");
     QPixmap pix(":/resources/Image/Login.jpg");
     int width = ui->lblOfLoginPicture->width();
     int height = ui->lblOfLoginPicture->height();
