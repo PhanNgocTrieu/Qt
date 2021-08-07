@@ -7,7 +7,7 @@
 #include <QtDebug>
 #include <QMessageBox>
 #include <string>
-
+#include <vector>
 
 
 int callback(void* Unused, int argc, char** argv, char** azColName)
@@ -37,7 +37,7 @@ MainMenu::MainMenu(QWidget *parent) :
     ui->txtNameOfArea->setEnabled(false);
     ui->txtNumberOfCases->setEnabled(false);
 
-    // stat
+    // state
     this->stateOfAddingDeclaration = false;
     this->stateOfUpdateDeclaration = false;
     this->stateOfAddingIsolated = false;
@@ -72,9 +72,14 @@ void MainMenu::on_ButtonConnectDB_clicked()
         if (rc == SQLITE_OK)
         {
             QMessageBox::information(this,"Connected","Connected To Database successful");
+//            manTable.dropTable();
             manTable.createTable();
+            //isolatedTable.dropTable();
             isolatedTable.createTable();
             this->stateOfConnected = true;
+
+            // reset
+            ui->txtDirOfDB->setText("");
         }
         else
             QMessageBox::information(this,"Unconnected","Connected To Database failed");
@@ -87,7 +92,6 @@ void MainMenu::on_ButtonConnectDB_clicked()
 void MainMenu::on_pushButtonNewDeclaration_clicked()
 {
     this->stateOfUpdateDeclaration = false;
-
     if (this->stateOfConnected == true)
     {
         this->stateOfAddingDeclaration = true;
@@ -99,12 +103,8 @@ void MainMenu::on_pushButtonNewDeclaration_clicked()
     else
     {
 
-        QMessageBox msgBox;
-        msgBox.setText("You did not connect Database yet! Please connect to DB first!");
-        msgBox.defaultButton();
-        msgBox.exec();
+       QMessageBox::information(this,"Unconnected","Connected To Database first!");
     }
-
 }
 
 
@@ -123,10 +123,7 @@ void MainMenu::on_btnNewIsolatedPlace_clicked()
     else
     {
 
-        QMessageBox msgBox;
-        msgBox.setText("You did not connect Database yet! Please connect to DB first!");
-        msgBox.defaultButton();
-        msgBox.exec();
+        QMessageBox::information(this,"Unconnected","Connected To Database first!");
     }
 }
 
@@ -153,10 +150,7 @@ void MainMenu::on_pushButtonUpdateDeclaration_clicked()
     else
     {
 
-        QMessageBox msgBox;
-        msgBox.setText("You did not connect Database yet! Please connect to DB first!");
-        msgBox.defaultButton();
-        msgBox.exec();
+        QMessageBox::warning(this,"Connected","You did not connect to DB yet!");
     }
 }
 
@@ -176,10 +170,7 @@ void MainMenu::on_btnUpdateIsolatedPlace_clicked()
     else
     {
 
-        QMessageBox msgBox;
-        msgBox.setText("You did not connect Database yet! Please connect to DB first!");
-        msgBox.defaultButton();
-        msgBox.exec();
+        QMessageBox::warning(this,"Connected","You did not connect to DB yet!");
     }
 }
 
@@ -219,6 +210,21 @@ void MainMenu::on_pushButtonSubmitOfDeclaration_clicked()
         ui->txtManID->setEnabled(false);
         ui->txtLocation->setEnabled(false);
         this->stateOfAddingDeclaration = false;
+
+
+        // Checking in Isolated Places
+        size_t len = isolatedTable.getListOfValues().size();
+        vector<ISOlATED> locationList = isolatedTable.getListOfValues();
+
+        for (size_t idex = 0; idex < len; idex++)
+        {
+            if (_Declaration.Location == locationList[idex].NameOfArea)
+            {
+                QMessageBox::warning(this,"In Isolated Place", QString::fromStdString("You in isolated place! Level: " + locationList[idex].DangLevel));
+                break;
+            }
+        }
+
     }
 
     if (this->stateOfUpdateDeclaration == true)
@@ -255,14 +261,15 @@ void MainMenu::on_btnSubmitOfIsolated_clicked()
         _Isolated.AreaID = ui->txtAreaID->text().toInt();
         _Isolated.NameOfArea = ui->txtNameOfArea->text().toStdString();
         _Isolated.NumberOfCases = ui->txtNumberOfCases->text().toInt();
-
+        _Isolated.DangLevel = ui->txtLevel->text().toStdString();
 
         std::string command;
-        command = "INSERT INTO Isolated(areaID, NameOfArea, NumOfCases) VALUES("
+        command = "INSERT INTO Isolated(areaID, NameOfArea, NumOfCases, Level) VALUES("
             + to_string(_Isolated.AreaID) + ", '"
             +  _Isolated.NameOfArea + "', "
-            + to_string(_Isolated.NumberOfCases)
-            + ");"
+            + to_string(_Isolated.NumberOfCases) +", '"
+            + _Isolated.DangLevel
+            + "');"
         ;
 
         std::cout << "Command: " << command << std::endl;
@@ -283,6 +290,7 @@ void MainMenu::on_btnSubmitOfIsolated_clicked()
         int AreaID = ui->txtAreaID->text().toInt();
         std::string NameOfArea = ui->txtNameOfArea->text().toStdString();
         int NumberOfCases = ui->txtNumberOfCases->text().toInt();
+
 
         std::string command;
         command = "UPDATE Isolated SET NameOfArea = '" + NameOfArea + "', NumOfCases = " + to_string(NumberOfCases) + " WHERE areaID = " + to_string(AreaID) + ";";
@@ -346,25 +354,41 @@ void MainMenu::on_pushButtonResetDeclaration_clicked()
 
 void MainMenu::on_btnDeleteAllValuesDeclaration_clicked()
 {
-    std::string command;
-    command = "DELETE FROM manInFor;";
-    manTable.setSqlCommand(command);
-    manTable.deleteValue();
+    if (stateOfConnected)
+    {
+        std::string command;
+        command = "DELETE FROM manInFor;";
+        manTable.setSqlCommand(command);
+        manTable.deleteValue();
 
-    // clear all of value
-    manTable.getListOfValues().clear();
+        // clear all of value
+        manTable.getListOfValues().clear();
+    }
+    else
+    {
+
+        QMessageBox::information(this,"Connected","You did not connect to DB yet!");
+    }
 }
 
 
 void MainMenu::on_btnDeleteAllValuesIsolated_clicked()
 {
-    std::string command;
-    command = "DELETE FROM Isolated;";
-    isolatedTable.setSqlCommand(command);
-    isolatedTable.deleteValue();
+    if (stateOfConnected == true)
+    {
+        std::string command;
+        command = "DELETE FROM Isolated;";
+        isolatedTable.setSqlCommand(command);
+        isolatedTable.deleteValue();
 
-    // clear all of value
-    isolatedTable.getListOfValues().clear();
+        // clear all of value
+        isolatedTable.getListOfValues().clear();
+    }
+    else
+    {
+
+        QMessageBox::information(this,"Connected","You did not connect to DB yet!");
+    }
 }
 
 /* ************************ END OF DELETE ************************** */
@@ -385,5 +409,17 @@ void MainMenu::on_ButtonShowDB_clicked()
     {
         QMessageBox::information(this,"Error:","You did not connect to DB yet!");
     }
+}
+
+
+void MainMenu::on_ButtonDropTB_Declaration_clicked()
+{
+    manTable.dropTable();
+}
+
+
+void MainMenu::on_ButtonDropTB_Isolated_clicked()
+{
+    isolatedTable.dropTable();
 }
 

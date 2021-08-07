@@ -1,5 +1,6 @@
 #include "isolatedplace.h"
 #include "mainwindow.h"
+#include "mainmenu.h"
 #include "sqlite3.h"
 #include <QtDebug>
 #include <QMessageBox>
@@ -52,7 +53,8 @@ void IsolatedPlace::createTable()
     SqlCommand = "CREATE TABLE IF NOT EXISTS Isolated("
         "AreaID INT PRIMARY KEY NOT NULL,"
         "NameOfArea VARCHAR(255) NOT NULL,"
-        "NumOfCases INT NOT NULL"
+        "NumOfCases INT NOT NULL,"
+        "Level VARCHAR(255) NOT NULL"
         ");"
         ;
     int rc;
@@ -154,9 +156,7 @@ void IsolatedPlace::deleteValue()
     rc = sqlite3_exec(DB,SqlCommand.c_str(),callback, 0, &errMsg);
     if (rc != SQLITE_OK)
     {
-        msgBox.setText("Error! Could not insert!");
-        msgBox.defaultButton();
-        msgBox.exec();
+
     }
     else
     {

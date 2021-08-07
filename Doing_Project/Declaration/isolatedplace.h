@@ -6,6 +6,7 @@
 #include <vector>
 typedef struct IsolatedTable{
     std::string NameOfArea;
+    std::string DangLevel;
     int AreaID;
     int NumberOfCases;
 } ISOlATED;

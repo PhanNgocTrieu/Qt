@@ -14,7 +14,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-image: url(:/resources/Image/SingIn-icon2.jpg);</string>
+   <string notr="true">background-image: url(:/resources/Image/Handling-background.jpg);</string>
   </property>
   <widget class="QPushButton" name="btnExit">
    <property name="geometry">
@@ -48,6 +48,12 @@
      <height>361</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="title">
     <string>Declaration DB</string>
    </property>
@@ -73,7 +79,7 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -112,6 +118,12 @@
      <height>361</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
    <property name="title">
     <string>Isolated Places DB</string>
    </property>
@@ -128,7 +140,7 @@
      <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -158,7 +170,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -169,11 +181,34 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout"/>
   </widget>
+  <widget class="QPushButton" name="pushButtonIsoLated_PeoPel">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>380</y>
+     <width>379</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string>In Isolated Places - People</string>
+   </property>
+  </widget>
   <zorder>groupBox_2</zorder>
   <zorder>groupBox</zorder>
   <zorder>btnExit</zorder>
   <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget</zorder>
+  <zorder>pushButtonIsoLated_PeoPel</zorder>
  </widget>
  <resources/>
  <connections/>

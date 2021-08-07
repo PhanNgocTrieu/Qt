@@ -32,6 +32,8 @@ private slots:
     void on_btnExit_clicked();
 
     void on_pushButtonLoadingDBIsolated_clicked();
+    void on_pushButtonIsoLated_PeoPel_clicked();
+
 private:
     Ui::TableView *ui;
     QSqlDatabase database;

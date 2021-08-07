@@ -40,9 +40,12 @@ TableView::~TableView()
 
 void TableView::on_pushButtonLoadingDBDeclaration_clicked()
 {
-    database = QSqlDatabase::addDatabase("QSQLITE");
-    std::cout << manInfor.getDirToDB() << std::endl;
-    database.setDatabaseName(QString::fromStdString(manInfor.getDirToDB()));
+    if (!database.isOpen())
+    {
+        database = QSqlDatabase::addDatabase("QSQLITE");
+        std::cout << manInfor.getDirToDB() << std::endl;
+        database.setDatabaseName(QString::fromStdString(manInfor.getDirToDB()));
+    }
     if (database.open())
     {
         modal = new QSqlQueryModel();
@@ -83,6 +86,12 @@ void TableView::on_pushButtonLoadingDBDeclaration_clicked()
 
 void TableView::on_pushButtonLoadingDBIsolated_clicked()
 {
+    if (!database.isOpen())
+    {
+        database = QSqlDatabase::addDatabase("QSQLITE");
+        std::cout << manInfor.getDirToDB() << std::endl;
+        database.setDatabaseName(QString::fromStdString(manInfor.getDirToDB()));
+    }
     if (database.open())
     {
         modal = new QSqlQueryModel();
@@ -124,4 +133,48 @@ void TableView::on_btnExit_clicked()
     close();
 }
 
+
+
+void TableView::on_pushButtonIsoLated_PeoPel_clicked()
+{
+    if (!database.isOpen())
+    {
+        database = QSqlDatabase::addDatabase("QSQLITE");
+        std::cout << manInfor.getDirToDB() << std::endl;
+        database.setDatabaseName(QString::fromStdString(manInfor.getDirToDB()));
+    }
+
+    if (database.open())
+    {
+        modal = new QSqlQueryModel();
+        QSqlQuery* query = new QSqlQuery(database);
+
+        query->prepare("select Name, location AS isolatedPlace from manInFor WHERE location in (SELECT NameOfArea from Isolated);");
+
+        if (query->exec())
+        {
+            modal->setQuery(*query);
+            ui->tableViewBDDeclaration->setModel(modal);
+            database.removeDatabase(QString::fromStdString(manInfor.getDirToDB()));
+            qDebug() << "Row Count:" << (modal->rowCount());
+        }
+        else
+        {
+            qDebug() << "Query executive failed";
+        }
+
+        if (query)
+        {
+            delete query;
+        }
+    }
+    else
+    {
+        std::cout << __LINE__ << std::endl;
+        QMessageBox msg;
+        msg.setText("Could not connect to DB to showing DB!");
+        msg.defaultButton();
+        msg.exec();
+    }
+}
 

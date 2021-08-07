@@ -14,17 +14,25 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(0, 0, 0);</string>
+   <string notr="true">background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QGroupBox" name="groupConsole">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">background-image: url(:/resources/Image/SingIn-icon2.jpg);</string>
+       <string notr="true">background-image: url(:/resources/Image/SingIn-icon2.jpg);
+color: rgb(6, 6, 6);</string>
       </property>
       <property name="title">
-       <string>Signing in console</string>
+       <string>Sign-in console</string>
       </property>
       <widget class="QLabel" name="lblOfLoginPicture">
        <property name="geometry">
@@ -51,8 +59,15 @@
          <height>241</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
        <property name="styleSheet">
-        <string notr="true">background-image: url(:/resources/Image/login-3.jpg);</string>
+        <string notr="true">background-image: url(:/resources/Image/login-3.jpg);
+color: rgb(6, 6, 6);</string>
        </property>
        <property name="title">
         <string>SignIn</string>
@@ -72,7 +87,7 @@
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true"/>
+             <string notr="true">color: rgb(3, 3, 3);</string>
             </property>
             <property name="text">
              <string>Username</string>
@@ -82,8 +97,7 @@
           <item>
            <widget class="QLineEdit" name="txtUserName">
             <property name="styleSheet">
-             <string notr="true">
-</string>
+             <string notr="true"/>
             </property>
             <property name="text">
              <string/>
@@ -109,7 +123,7 @@
              </font>
             </property>
             <property name="styleSheet">
-             <string notr="true"/>
+             <string notr="true">color: rgb(6, 6, 6);</string>
             </property>
             <property name="text">
              <string>Password</string>

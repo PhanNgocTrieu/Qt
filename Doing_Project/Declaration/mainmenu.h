@@ -49,6 +49,10 @@ private slots:
 
     void on_ButtonShowDB_clicked();
 
+    void on_ButtonDropTB_Declaration_clicked();
+
+    void on_ButtonDropTB_Isolated_clicked();
+
 private:
     Ui::MainMenu *ui;
     InforOfMan manTable;
